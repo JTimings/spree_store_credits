@@ -1,11 +1,25 @@
 <% if (spree_current_user && spree_current_user.store_credits_total > 0) %>
-<% usable_amount = number_with_precision(@order.store_credit_maximum_usable_amount, :precision => 2, :separator => '.', :delimiter => '') %>
-<br style='clear:both;' />
-<p><%= Spree.t('you_have_store_credit',
-       :amount => number_to_currency(spree_current_user.store_credits_total))%>
-</p>
-<p>
-  <label><%= Spree.t('enter_desired_amount_of_store_credit') %></label><br />
-  <%= form.text_field :store_credit_amount, :size => 19, :value => usable_amount, :data => { :store_credit_maximum_amount => usable_amount, :store_credit_maximum_amount_message => Spree.t('store_credit_maximum_amount', :amount => number_to_currency(@order.store_credit_maximum_usable_amount)) } %>
-</p>
+	<% usable_amount = number_with_precision(@order.store_credit_maximum_usable_amount, :precision => 2, :separator => '.', :delimiter => '') %>
+	<% current_amount = number_with_precision(current_order.adjustments.store_credits.sum(:amount).abs, :precision => 2, :separator => '.', :delimiter => '') %>
+
+	<div class="row store-credit-co">
+	  <div id="reveal-store-credit-checkout" class="col-xs-12 store-credit-co-reveal">
+	    <h5><a class="store-credit-co-reveal-text" href="javascript:;" onClick="document.getElementById('hidden-store-credit-checkout').style.display='block'; document.getElementById('reveal-store-credit-checkout').style.display='none'; document.getElementById('order_store_credit_amount').value=<%=usable_amount%>;">Use Store Credit</a></h5>
+	  </div>
+	  <div id="hidden-store-credit-checkout" style="display:none;">
+	  	<p id="store-credit-label"><%= Spree.t('you_have_store_credit', :amount => zero_cents(Spree::Money.new spree_current_user.store_credits_total) ? (Spree::Money.new spree_current_user.store_credits_total) : (Spree::Money.new spree_current_user.store_credits_total, :no_cents => false) )%></p>
+	    <div class="col-xs-6 store-credit-input">
+	    	<div class="left-inner-addon">
+	    		<span><%= Spree::Money.new(0).to_s[0] %></span>
+	      	<%= form.text_field :store_credit_amount, :size => 19, :value => current_amount, :data => { :store_credit_maximum_amount => usable_amount, :store_credit_maximum_amount_message => Spree.t('store_credit_maximum_amount', :amount => zero_cents(Spree::Money.new @order.store_credit_maximum_usable_amount) ? (Spree::Money.new @order.store_credit_maximum_usable_amount) : (Spree::Money.new @order.store_credit_maximum_usable_amount, :no_cents => false) ) }, class: "form-control" %>
+	      </div>  
+	    </div>
+	    <div class="col-xs-6 store-credit-apply">
+	        <%= button_tag :class => 'btn btn-sm btn-primary pull-right', :id => 'update-button' do %>
+	          <%= Spree.t(:apply) %>
+	        <% end %> 
+	    </div>
+	  </div> 
+	</div>
+
 <% end %>

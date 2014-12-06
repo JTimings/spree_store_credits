@@ -8,7 +8,7 @@ module Spree
 
     private
     def remove_payments_attributes_if_total_is_zero
-      load_order_with_lock
+      @order = current_order(lock: true)
 
       return unless params[:order] && params[:order][:store_credit_amount]
       parsed_credit = Spree::Price.new

@@ -80,8 +80,6 @@ Spree::Order.class_eval do
       end
     end
   end
-  # consume users store credit once the order has completed.
-  state_machine.after_transition :to => :complete,  :do => :consume_users_credit
 
   # ensure that user has sufficient credits to cover adjustments
   #
