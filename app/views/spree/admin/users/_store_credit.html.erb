@@ -1,0 +1,6 @@
+<tr data-hook="store_credit">
+  <th><%= Spree.t(:store_credit) %></th>
+  <td>
+    <%= zero_cents(Spree::Money.new @user.store_credits.sum(:remaining_amount)) ? (Spree::Money.new @user.store_credits.sum(:remaining_amount)) : (Spree::Money.new @user.store_credits.sum(:remaining_amount), :no_cents => false) %>
+  </td>
+</tr>

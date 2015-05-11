@@ -32,3 +32,8 @@ Deface::Override.new(
   :insert_before => "[data-hook='buttons']",
   :partial => "spree/admin/store_credits/limit",
   :disabled => true)
+
+Deface::Override.new(:virtual_path => "spree/admin/users/show",
+                     :name         => "admin_user_show_store_credit",
+                     :insert_after => "table tr:last",
+                     :partial      => "spree/admin/users/store_credit")
