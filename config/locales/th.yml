@@ -1,0 +1,22 @@
+---
+th:
+  spree:
+    add_store_credit: "เพิ่ม store credit"
+    current_store_credit: "ยอด credit ขณะนี้"
+    editing_store_credit: "แก้ไข store credit"
+    enter_desired_amount_of_store_credit: "ใส่จำนวน store credit ที่คุณต้องการจะใช้"
+    listing_store_credits: "Store credits"
+    new_store_credit: "Store credit ใหม่"
+    manage_store_credits: "จัดการ store credits"
+    orders_with_store_credit: "สั่งออเดอร์ด้วย credit"
+    remaining_amount: "จำนวนที่เหลือ"
+    store_credit: "Store Credit"
+    store_credit_maximum_amount: "จำนวน store credit ควรจะน้อยกว่าหรือเท่ากับ %{amount} เพื่อที่จะยืนยันออเดอร์ได้"
+    store_credits: "Store Credits"
+    you_have_store_credit: "คุณมี store credit %{amount} กรุณาใส่จำนวนที่ต้องการจะใช้"
+    was_fully_used: "ใช้ทั้งหมดแล้ว"
+    was_partially_used: "ใช้ไปส่วนหนึ่ง"
+    cannot_edit_used: "ไม่สามารถแก้ไขได้เพราะใช้ไปแล้ว"
+    errors:
+      messages:
+        store_credit_minimum_order_not_reach: "ยอดออเดอร์ต่ำกว่าจำนวนที่จะใช้ store credit ได้ (%{amount})"
