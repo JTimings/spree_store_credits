@@ -7,4 +7,20 @@ class Spree::StoreCredit < ActiveRecord::Base
   else
     belongs_to :user
   end
+
+  has_many :store_credit_uses
+
+  def use_category
+  	case self.reason.downcase
+  	when /affiliate/
+  		return 'AFFILILATE'
+  	when /compensation/
+  		return 'COMPENSATION'
+  	when /prepaid/
+  		return 'PREPAID'
+  	else
+  		return 'COMPENSATION'
+  	end  	
+  end
+
 end

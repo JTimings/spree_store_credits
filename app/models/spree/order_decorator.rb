@@ -73,15 +73,19 @@ Spree::Order.class_eval do
     return unless completed? and user.present?
     credit_used = self.store_credit_amount
 
+    sca = adjustments.store_credits.first rescue nil
+
     user.store_credits.each do |store_credit|
       break if credit_used == 0
       if store_credit.remaining_amount > 0
         if store_credit.remaining_amount > credit_used
           store_credit.remaining_amount -= credit_used
+          create_credit_use(sca,store_credit,credit_used)
           store_credit.save
           credit_used = 0
         else
           credit_used -= store_credit.remaining_amount
+          create_credit_use(sca,store_credit,store_credit.remaining_amount)
           store_credit.update_attribute(:remaining_amount, 0)
         end
       end
@@ -97,6 +101,11 @@ Spree::Order.class_eval do
 
       update!
     end
+  end
+
+  def create_credit_use(adj,credit,amount)
+    category = credit.use_category
+    credit.store_credit_uses.create(adjustment_id: adj.id, amount: amount, category: category)
   end
 
 end
