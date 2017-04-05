@@ -3,6 +3,14 @@ module Spree
     before_filter :check_amounts, :only => [:edit, :update]
     prepend_before_filter :set_remaining_amount, :only => [:create, :update]
 
+    def index
+      params[:q] ||= {}
+      @search = Spree::StoreCredit.search(params[:q])
+      unless params[:q].blank?
+        @store_credits = @search.result(distinct: true).page(params[:page]).per(10000)
+      end
+    end
+
     protected
       def permitted_resource_params
         params.require(:store_credit).permit(permitted_store_credit_attributes)

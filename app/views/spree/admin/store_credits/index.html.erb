@@ -1,23 +1,37 @@
-<%= render :partial => 'spree/admin/shared/configuration_menu' %>
+<% content_for :page_title do %>
+  <%= Spree.t(:listing_store_credits) %>
+<% end %>
 
-<h1 class="page-title "> <%= Spree.t("listing_store_credits") %></h1><br>
+<% content_for :table_filter_title do %>
+  <%= Spree.t(:search) %>
+<% end %>
+
+<% content_for :table_filter do %>
+  <%= search_form_for @search, :url => '/admin/store_credits' do |f| %>
+    <%= render :partial => 'spree/admin/store_credits/search', :locals => { :f => f } %> 
+  <% end %>
+<% end %>
+
+<%= paginate @store_credits %>
 
 <table class="index">
   <thead>
     <tr>
       <th><%= Spree.t("user") %></th>
       <th><%= Spree.t("amount") %></th>
-      <th><%= Spree.t("remaining_amount") %></th>
+      <th><%= Spree.t("remaining") %></th>
       <th><%= Spree.t("reason") %></th>
+      <th><%= Spree.t("created_at") %></th>
     </tr>
   </thead>
   <tbody>
     <% @store_credits.each do |store_credit|%>
       <tr id="<%= dom_id store_credit %>">
-        <td><%= link_to store_credit.user.email, admin_user_url(store_credit.user) if store_credit.user.present? %></td>
-        <td><%= Spree::Money.new store_credit.amount, :no_cents => false %></td>
-        <td><%= Spree::Money.new store_credit.remaining_amount, :no_cents => false %></td>
+        <td class="align-center" ><%= link_to store_credit.user.email, admin_user_url(store_credit.user) if store_credit.user.present? %></td>
+        <td class="align-center" ><%= Spree::Money.new store_credit.amount, :no_cents => false %></td>
+        <td class="align-center" ><%= Spree::Money.new store_credit.remaining_amount, :no_cents => false %></td>
         <td><%= store_credit.reason %></td>
+        <td class="align-center" ><%= store_credit.created_at.strftime("%d/%m/%y %H:%M")  %></td>
         <td class="actions">
           <% if store_credit.remaining_amount > 0 %>
             <% if store_credit.amount == store_credit.remaining_amount %>
@@ -32,7 +46,7 @@
       </tr>
     <% end %>
     <% if @store_credits.empty? %>
-      <tr><td colspan="4"><%= Spree.t(:none) %></td></tr>
+      <tr><td colspan="5"><%= Spree.t(:none) %></td></tr>
     <% end %>
   </tbody>
 </table>
