@@ -26,13 +26,13 @@
   </thead>
   <tbody>
     <% @store_credits.each do |store_credit|%>
-      <tr id="<%= dom_id store_credit %>">
+      <tr id="<%= dom_id store_credit %>" class="<%= cycle('odd', 'even') %>">
         <td class="align-center" ><%= link_to store_credit.user.email, admin_user_url(store_credit.user) if store_credit.user.present? %></td>
         <td class="align-center" ><%= Spree::Money.new store_credit.amount, :no_cents => false %></td>
         <td class="align-center" ><%= Spree::Money.new store_credit.remaining_amount, :no_cents => false %></td>
         <td><%= store_credit.reason %></td>
         <td class="align-center" ><%= store_credit.created_at.strftime("%d/%m/%y %H:%M")  %></td>
-        <td class="actions">
+        <td class="actions" style="height: 43px;">
           <% if store_credit.remaining_amount > 0 %>
             <% if store_credit.amount == store_credit.remaining_amount %>
               <%= link_to_edit store_credit, :no_text => true %> &nbsp;

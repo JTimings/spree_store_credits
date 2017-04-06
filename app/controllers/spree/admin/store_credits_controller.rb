@@ -5,9 +5,9 @@ module Spree
 
     def index
       params[:q] ||= {}
-      @search = Spree::StoreCredit.search(params[:q])
-      unless params[:q].blank?
-        @store_credits = @search.result(distinct: true).page(params[:page]).per(10000)
+      @search = Spree::StoreCredit.search(credit_params(params))
+      unless params[:q].blank?  
+        @store_credits = @search.result(distinct: true).page(params[:page]).per(25)
       end
     end
 
@@ -35,6 +35,16 @@ module Spree
 
     def permitted_store_credit_attributes
       [:user_id, :amount, :reason, :remaining_amount]
+    end
+
+    def credit_params(params)
+      if !params[:q][:created_at_gt].blank?
+        created_start = Time.zone.parse(params[:q][:created_at_gt]).beginning_of_day rescue ""
+      end
+      if !params[:q][:created_at_lt].blank?
+        created_end = Time.zone.parse(params[:q][:created_at_lt]).end_of_day rescue ""
+      end
+      { user_email_cont: params[:q][:user_email_cont], created_at_gt: created_start, created_at_lt: created_end }
     end
 
   end
