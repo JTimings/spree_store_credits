@@ -19,7 +19,7 @@ class Spree::StoreCredit < ActiveRecord::Base
   	when /prepaid/
   		return 'PREPAID'
   	else
-  		return 'COMPENSATION'
+  		return 'EMPLOYEEBENEFIT'
   	end  	
   end
 
